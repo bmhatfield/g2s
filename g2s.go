@@ -13,7 +13,7 @@ const (
 )
 
 type Statter interface {
-	Counter(sampleRate float32, bucket string, n ...int)
+	Counter(sampleRate float32, bucket string, n ...float32)
 	Timing(sampleRate float32, bucket string, d ...time.Duration)
 	Gauge(sampleRate float32, bucket string, value ...string)
 }
@@ -116,7 +116,7 @@ func maybeSample(r float32) (sampling, bool) {
 // Application code should call it for every potential invocation of a
 // statistic; it uses the sampleRate to determine whether or not to send or
 // squelch the data, on an aggregate basis.
-func (s *statsd) Counter(sampleRate float32, bucket string, n ...int) {
+func (s *statsd) Counter(sampleRate float32, bucket string, n ...float32) {
 	samp, ok := maybeSample(sampleRate)
 	if !ok {
 		return
@@ -149,7 +149,7 @@ func (s *statsd) Timing(sampleRate float32, bucket string, d ...time.Duration) {
 	for i, di := range d {
 		msgs[i] = &timingUpdate{
 			bucket:   bucket,
-			ms:       int(di.Nanoseconds() / 1e6),
+			ms:       float32(float64(di) / float64(time.Millisecond)),
 			sampling: samp,
 		}
 	}

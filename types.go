@@ -22,22 +22,22 @@ func (s *sampling) Suffix() string {
 
 type counterUpdate struct {
 	bucket string
-	n      int
+	n      float32
 	sampling
 }
 
 func (u *counterUpdate) Message() string {
-	return fmt.Sprintf("%s:%d|c%s\n", u.bucket, u.n, u.sampling.Suffix())
+	return fmt.Sprintf("%s:%f|c%s\n", u.bucket, u.n, u.sampling.Suffix())
 }
 
 type timingUpdate struct {
 	bucket string
-	ms     int
+	ms     float32
 	sampling
 }
 
 func (u *timingUpdate) Message() string {
-	return fmt.Sprintf("%s:%d|ms\n", u.bucket, u.ms)
+	return fmt.Sprintf("%s:%f|ms\n", u.bucket, u.ms)
 }
 
 type gaugeUpdate struct {

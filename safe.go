@@ -6,7 +6,7 @@ import (
 
 type noStatsd struct{}
 
-func (n noStatsd) Counter(float32, string, ...int)          {}
+func (n noStatsd) Counter(float32, string, ...float32)      {}
 func (n noStatsd) Timing(float32, string, ...time.Duration) {}
 func (n noStatsd) Gauge(float32, string, ...string)         {}
 
